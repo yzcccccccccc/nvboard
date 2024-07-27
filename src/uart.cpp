@@ -10,7 +10,7 @@ bool is_uart_rx_idle = true;
 
 UART::UART(SDL_Renderer *rend, int cnt, int init_val, int ct, int x, int y, int w, int h):
     Component(rend, cnt, init_val, ct),
-    tx_state(0), rx_state(0), divisor(16), need_update_gui(false) {
+    tx_state(0), rx_state(0), divisor(0xc0), need_update_gui(false) {
   term = new Term(rend, x, y, w, h);
 
   SDL_Rect *rect_ptr = new SDL_Rect;
@@ -122,6 +122,7 @@ void init_uart(SDL_Renderer *renderer) {
   init_render_local(renderer);
   int x = WINDOW_WIDTH / 2, y = 0, w = WINDOW_WIDTH / 2, h = WINDOW_HEIGHT / 2;
   uart = new UART(renderer, 1, 0, UART_TYPE, x, y, w, h);
+  uart->set_divisor(0xc0 * 16);
   uart->add_pin(UART_TX);
   uart->add_pin(UART_RX);
   add_component(uart);
